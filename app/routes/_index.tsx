@@ -1,4 +1,6 @@
 import type { V2_MetaFunction } from "@remix-run/node";
+import { motion } from "framer-motion";
+import { type PropsWithChildren } from "react";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -11,18 +13,50 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
+const AppearingText = ({ text, delay }: { text: string; delay: number }) => {
+  const chars = text.split("");
+
+  const charVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+  return (
+    <motion.span
+      className="flex"
+      transition={{
+        delayChildren: delay,
+        staggerChildren: 0.05,
+      }}
+      variants={{ hidden: {}, visible: {} }}
+    >
+      {chars.map((char, index) => {
+        if (char === " ") return <div key={index} className="w-2" />;
+        return (
+          <motion.div key={index} variants={charVariants}>
+            {char}
+          </motion.div>
+        );
+      })}
+    </motion.span>
+  );
+};
+
 export default function Index() {
   return (
-    <div className="h-screen flex flex-col justify-center bg-gradient-to-tr from-slate-100 to-sky-300">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-sky-900 sm:text-5xl">
-          Aaron Pettengill
-        </h1>
-        <h2 className="text-xl font-bold tracking-tight text-sky-700 sm:text-4xl">
-          Full-stack Developer
-        </h2>
-        <div className="text-sm mt-6 text-slate-500 flex justify-center">
-          Testing
+    <div className="h-screen bg-gradient-to-tr from-sky-300 via-sky-100 to-sky-200 flex items-center justify-center">
+      <div className="flex space-x-4 items-center">
+        <img
+          src="/headshot.webp"
+          className="rounded-full w-32 h-32 mx-auto mb-4 shadow-md"
+          alt=""
+        />
+        <div>
+          <h1 className="text-4xl tracking-tight text-sky-600 font-semibold sm:text-5xl drop-shadow-md">
+            Aaron Pettengill
+          </h1>
+          <h2 className="text-xl tracking-tight text-sky-600 font-thin sm:text-4xl drop-shadow-md">
+            Full-stack Developer
+          </h2>
         </div>
       </div>
     </div>
